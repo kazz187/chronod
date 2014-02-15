@@ -7,8 +7,7 @@ import com.typesafe.scalalogging.slf4j.Logging
  * ChronodDaemon
  */
 class ChronodDaemon extends Logging {
-
-  def setup() {
+  protected def setup() {
     val javaVersion = System.getProperty("java.version")
     val javaVmName = System.getProperty("java.vm.name")
     logger.info("JVM vendor/version: {}/{}", javaVmName, javaVersion)
@@ -39,14 +38,17 @@ class ChronodDaemon extends Logging {
     start()
   }
 
+  trait Server {
+    def start()
+    def stop()
+    def isRunning(): Boolean
+  }
 }
 
 
 object ChronodDaemon {
-
   def main(args: Array[String]) {
     val daemon = new ChronodDaemon
     daemon.activate()
   }
-
 }
